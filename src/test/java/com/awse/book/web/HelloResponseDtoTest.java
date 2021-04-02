@@ -1,11 +1,14 @@
 package com.awse.book.web;
 
 
-import static org.junit.Assert.assertThat;
 import com.awse.book.web.dto.HelloResponseDto;
 
 import org.hamcrest.core.IsEqual;
 import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 public class HelloResponseDtoTest {
 
@@ -17,9 +20,8 @@ public class HelloResponseDtoTest {
 
         // when
         HelloResponseDto dto = new HelloResponseDto(name, amount);
-
-        // assertThat(dto.getName()).isEqualsTo(name);
-        // assertThat(dto.getAmount()).isEqualsTo(amount);
+         assertThat(dto.getName()).isEqualTo(name);
+         assertThat(dto.getAmount()).isEqualTo(amount);
 
     }
 

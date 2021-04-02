@@ -14,8 +14,15 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import java.util.List;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -49,14 +56,14 @@ public class PostsApiControllerTests {
 
         ResponseEntity<Long> responseEntity = restTemplate.postForEntity(url, requestDto, Long.class);
 
-        /*
-            assertThat(responseEntity.getStatusCode()).isEqualsTo(HttpStatus.OK);
+        
+            assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
             assertThat(responseEntity.getBody()).isGreaterThan(0L);
 
-            Lists<Posts> all = postsRepository.findAll();
-            assertThat(all.get(0).getTitle()).isEqualsTo(title);
-            assertThat(all.get(0).getContent()).isEqualsTo(content);
-        */
+            List<Posts> all = postsRepository.findAll();
+            assertThat(all.get(0).getTitle()).isEqualTo(title);
+            assertThat(all.get(0).getContent()).isEqualTo(content);
+        
     }
 
     @Test
@@ -69,20 +76,20 @@ public class PostsApiControllerTests {
 
         PostsUpdateRequestDto requestDto = PostsUpdateRequestDto.builder().title(expectedTitle).content(expectedContent).build();
 
-        String url = "http://localhost:"+port+"/api/v1/posts";
+        String url = "http://localhost:"+port+"/api/v1/posts"+updateId;
 
         HttpEntity<PostsUpdateRequestDto> requestEntity = new HttpEntity<>(requestDto);
 
         ResponseEntity<Long> responseEntity = restTemplate.exchange(url, HttpMethod.PUT, requestEntity, Long.class);
 
-        /*
-            assertThat(responseEntity.getStatusCode()).isEqualsTo(HttpStatus.OK);
-            assertThat(responseentity.getBody()).isGreaterThan(0L);
+        
+            assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+            assertThat(responseEntity.getBody()).isGreaterThan(0L);
 
-            Lists<Posts> all = postsRepository.findAll();
-            assertThat(all.get(0).getTitle()).isEqualsTo(expectedTitle);
-            assertThat(all.get(0).getContent()).isEqualsTo(expectedContent);
-        */
+            List<Posts> all = postsRepository.findAll();
+            assertThat(all.get(0).getTitle()).isEqualTo(expectedTitle);
+            assertThat(all.get(0).getContent()).isEqualTo(expectedContent);
+        
 
         
     }

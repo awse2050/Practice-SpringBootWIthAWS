@@ -1,9 +1,13 @@
 package com.awse.book.service.posts;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.transaction.Transactional;
 
 import com.awse.book.domain.posts.Posts;
 import com.awse.book.domain.posts.PostsRepository;
+import com.awse.book.web.dto.PostsListResponseDto;
 import com.awse.book.web.dto.PostsResponseDto;
 import com.awse.book.web.dto.PostsSaveRequestDto;
 import com.awse.book.web.dto.PostsUpdateRequestDto;
@@ -40,4 +44,20 @@ public class PostsService {
         
         return new PostsResponseDto(entity);
     }
+
+    @org.springframework.transaction.annotation.Transactional(readOnly = true)
+    public List<PostsListResponseDto> findAllDesc() {
+        return postsRepository.findAllDesc().stream()
+                .map(PostsListResponseDto::new).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        Posts posts = postsRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당게시글이없습니다."+id));
+
+        postsRepository.delete(posts);
+
+    }
+
+
 }
